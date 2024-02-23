@@ -1,0 +1,80 @@
+import time
+import random
+import re
+i=0  
+iplist = []
+
+testlimit = input("Enter the amount of tests to run:")
+testlimit = int(testlimit)
+
+start = time.time()
+
+while i < testlimit:
+	num1 = str(random.randint(0, 255))
+	num2 = str(random.randint(0, 255))
+	num3 = str(random.randint(0, 255))
+	num4 = str(random.randint(0, 255))
+	i+=1
+	ip = num1 + "." + num2 + "." + num3 + "." + num4
+	iplist.append(ip)
+
+	num1 = str(random.randint(256, 666))
+	num2 = str(random.randint(256, 666))
+	num3 = str(random.randint(256, 666))
+	num4 = str(random.randint(256, 666))
+	ip = num1 + "." + num2 + "." + num3 + "." + num4
+	iplist.append(ip)
+
+stop = time.time()
+
+duration = stop - start
+
+print("It took ", duration, "seconds to build a list with ", len(iplist), "ip address's")
+
+validips = 0 
+invalidips = 0
+start = time.time()
+
+for test1 in iplist:
+	test1 = test1.split(".")
+	invalid = 0
+	for test2 in test1:
+		if test2.isnumeric() == False:
+			invalid = 1
+			break
+		else:
+			if int(test2) < 0 or int(test2) > 255:
+				invalid = 1
+				break
+	if invalid == 1:
+		invalidips += 1
+	else:
+		validips += 1
+
+stop = time.time()
+duration = stop - start
+
+print("Python conditional tests took ", duration, " seconds to complete.")
+print("Valid Ips :", validips)
+print("Invalid ips:", invalidips)
+
+
+validips = 0
+invalidips = 0 
+start = time.time()
+
+for test1 in iplist:
+	regtest = re.match(r"^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$", test1)
+	if not bool(regtest):
+		invalidips += 1
+	else:
+		validips += 1
+
+stop = time.time()
+duration = stop-start
+
+print("Regex conditional tests took ", duration, "seconds to complete.")
+
+print("Valid Ips :", validips)
+print("Invalid ips:", invalidips)
+		
